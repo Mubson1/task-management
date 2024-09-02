@@ -1,10 +1,28 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)", "/sign-up(.*)"]);
 
 export default clerkMiddleware((auth, request) => {
   if (!isPublicRoute(request)) {
     auth().protect();
+  }
+  //upon logged in, dont show landing page
+  if (auth().userId && isPublicRoute(request)) {
+    let path = "/select-org";
+    if (auth().orgId) path = `/organization/${auth().orgId}`;
+
+    const orgSelection = new URL(path, request.url);
+    return NextResponse.redirect(orgSelection);
+  }
+  //a logged in user if has not any organization, force them to create one
+  if (
+    auth().userId &&
+    !auth().orgId &&
+    request.nextUrl.pathname !== "/select-org"
+  ) {
+    const orgSelection = new URL("/select-org", request.url);
+    return NextResponse.redirect(orgSelection);
   }
 });
 
