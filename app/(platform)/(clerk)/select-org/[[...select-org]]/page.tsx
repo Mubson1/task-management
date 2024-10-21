@@ -5,6 +5,7 @@ const CreateOrganisationPage = () => (
     hidePersonal
     afterSelectPersonalUrl="/organization/:id"
     afterCreateOrganizationUrl="/organization/:id"
+    afterSelectOrganizationUrl="/organization/:id"
   />
 );
 
