@@ -13,9 +13,10 @@ import { useAction } from "@/hooks/use-action";
 
 interface ListHeaderProps {
   data: List;
+  onAddCard: () => void;
 }
 
-export const ListHeader = ({ data }: ListHeaderProps) => {
+export const ListHeader = ({ data, onAddCard }: ListHeaderProps) => {
   const formRef = useRef<ElementRef<"form">>(null);
   const inputRef = useRef<ElementRef<"input">>(null);
 
@@ -90,7 +91,7 @@ export const ListHeader = ({ data }: ListHeaderProps) => {
           {title}
         </div>
       )}
-      <ListOptions data={data} handleAddCard={() => {}} />
+      <ListOptions data={data} handleAddCard={onAddCard} />
     </div>
   );
 };
